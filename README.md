@@ -11,5 +11,8 @@ Practicing **TTD (Test-Driven Development)** is a good way to guide your develop
 5. In the Initial Entries test suite, I used the `beforeEach` hook and asynchronous `done()` function so that I could check if the `.entry` element, combined with the `length` property, would correctly answer the `toBeGreaterThanOrEqual(1)` expectation.
 6. For the last, and most difficult test suite, I reused the same hook and asynchronous function from the previous test and added a second hook using `afterEach`, with a comparing `not.toEqual` expectation between two different variable instances of the same element.
 
+## Demo
+[Access the RSS Feed application test](https://txago.github.io/feed-reader-testing/)
+
 ## Resources
 [Front-End Nanodegree Feed Reader](https://github.com/udacity/frontend-nanodegree-feedreader) by [Udacity](https://github.com/udacity)
