@@ -32,8 +32,8 @@ $(function() {
      */
     it('should have a defined URL', function() {
       allFeeds.forEach(function(feed) {
-        expect(feed.url).toBeDefined();
-        expect(feed.url).not.toBe(0);
+        expect(allFeeds).toBeDefined();
+        expect(feed.url.length).not.toBe(0);
       });
     });
 
@@ -44,7 +44,7 @@ $(function() {
     it('should have a defined name', function() {
       allFeeds.forEach(function(feed) {
         expect(feed.name).toBeDefined();
-        expect(feed.name).not.toBe(0);
+        expect(feed.name.length).not.toBe(0);
       });
     });
   });
@@ -67,15 +67,10 @@ $(function() {
      * clicked and does it hide when clicked again.
      */
     it('should change visibility when menu icon is clicked', function() {
-      if ($('body').hasClass('menu-hidden')) {
-        $('.menu-icon-link').click();
-        expect($('body').hasClass('menu-hidden')).not.toBe(true);
-      }
-
-      if (!$('body').hasClass('menu-hidden')) {
-        $('.menu-icon-link').click();
-        expect($('body').hasClass('menu-hidden')).toBe(true);
-      }
+      $('.menu-icon-link').trigger('click');
+      expect($('body').hasClass('menu-hidden')).toBe(false);
+      $('.menu-icon-link').trigger('click');
+      expect($('body').hasClass('menu-hidden')).toBe(true);
     });
   });
 
@@ -92,7 +87,7 @@ $(function() {
     });
 
     it('should have at least one entry after loading the feed', function(done) {
-      expect($('.feed .entry-link .entry').length).toBeGreaterThanOrEqual(1);
+      expect($('.feed .entry').length).toBeGreaterThan(0);
       done();
     });
   });
@@ -103,20 +98,20 @@ $(function() {
      * by the loadFeed function that the content actually changes.
      * Remember, loadFeed() is asynchronous.
      */
-    var firstFeed, secondFeed;
 
     beforeEach(function(done) {
-      loadFeed(0, done);
+      loadFeed(0, function () {
+        feedAfterFirstLoad = $('.feed').html();
+        loadFeed(1, function () {
+          feedAfterSecondLoad = $('.feed').html();
+          done();
+        });
+      });
     });
 
-    it('should change the content when a new feed is loaded', function(done) {
-      firstFeed = $('.feed .entry-link .entry')[0];
-      loadFeed(1, done);
-    });
-
-    afterEach(function() {
-      secondFeed = $('.feed .entry-link .entry')[0];
-      expect(firstFeed).not.toEqual(secondFeed);
+    it('should change the content when it is loaded', function(done) {
+      expect(feedAfterFirstLoad).not.toEqual(feedAfterSecondLoad);
+      done();
     });
   });
 }());
